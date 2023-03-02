@@ -1,0 +1,48 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "ms-postgres.name" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  updateStrategy:
+    type: RollingUpdate
+  serviceName: {{ include "ms-postgres.name" . }}
+  selector:
+    matchLabels:
+      app:  {{ include "ms-postgres.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "ms-postgres.name" . }}
+    spec:
+      containers:
+        - name: {{ include "ms-postgres.name" . }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: pgcred
+                  key: DBUserName
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pgcred
+                  key: DBPassword
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: pgcred
+                  key: DBName
+          volumeMounts:
+          - name: pgdata
+            mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: pgdata
+          hostPath:
+            type: DirectoryOrCreate
+            path: /pgdata  # matches kind containerPath in Kind Cluster.yaml

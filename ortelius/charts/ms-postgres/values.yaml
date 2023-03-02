@@ -1,0 +1,4 @@
+replicaCount: 1
+image:
+  repository: postgres
+  tag: 12.14-alpine3.17
