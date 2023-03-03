@@ -3,3 +3,77 @@ global:
     enabled: false
   nginxController:
     enabled: false
+---
+replicaCount: 1
+image:
+  repository: quay.io/ortelius/ms-compitem-crud
+  tag: main-v10.0.10-g0d4848
+  sha: sha256:31154cb995868064cb3b253f78e83636a914e5a797b6c490cb2b2d16a2facc3e
+  pullPolicy: Always
+---
+replicaCount: 1
+image:
+  repository: quay.io/ortelius/ms-dep-pkg-cud
+  tag: main-v10.0.8-g4ccf6d
+  sha: sha256:6ef0b24c306ed53360d15a9e386f5661ad6fa4341dbb8559d2cbd1327ce908ea
+  pullPolicy: Always
+---
+replicaCount: 1
+image:
+  repository: quay.io/ortelius/ms-dep-pkg-r
+  tag: main-v10.0.16-gc851fc
+  sha: sha256:c61df028704fd55c9b094f3ab6f62589119d47265e36ef576fe9d5cad3012cd0
+  pullPolicy: Always
+---
+replicaCount: 1
+image:
+  pullPolicy: Always
+  repository: quay.io/ortelius/ms-general
+  tag: svc_cat-v10.0.58-g130a4e
+  sha: sha256:d25a6093b5851f1888f04497c95b972888a48c61cf9b9d3e32be8b43786cef5e
+internal_nginx: "OFF"
+---
+# Default values for ms-nginx.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+replicaCount: 1
+image:
+  repository: quay.io/ortelius/ms-nginx
+  tag: svc_cat-v10.0.58-g130a4e
+  sha: sha256:dcfe057d48bf9c1c780bef36af415243e1c20c0344e750c97e664af5ebb6e016
+  pullPolicy: Always
+ingress:
+  enum:
+    alb: "OFF"
+    volumemnt: ""
+    sslcert: "ON"
+    ssloff: "OFF"
+  type: ssloff # alb, volumemnt, sslcert, ssloff
+  alb_certificate_arn:
+  alb_subnets:
+---
+replicaCount: 1
+image:
+  repository: postgres
+  tag: 12.14-alpine3.17
+---
+replicaCount: 1
+image:
+  repository: quay.io/ortelius/ms-scorecard
+  tag: main-v10.0.64-g36cb6e
+  sha: sha256:73e10d0f496e8da912782faac807c703e724e5f3365f8dc1a7ceb74e49e93801
+  pullPolicy: Always
+---
+replicaCount: 1
+image:
+  repository: quay.io/ortelius/ms-textfile-crud
+  tag: main-v10.0.16-g2c231b
+  sha: sha256:b1184a442b05af1835c304e53075180db270514c06926cd71730a20793575a27
+  pullPolicy: Always
+---
+replicaCount: 1
+image:
+  repository: quay.io/ortelius/ms-ui
+  tag: svc_cat-v10.0.58-g130a4e
+  sha: sha256:650776d6bd1a6d1048bb636ec1b1144ea7f77ea9cdfde33d2326e84d43e4857b
+internal_nginx: "OFF"
